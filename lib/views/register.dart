@@ -1,26 +1,60 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutterproject/auth/Auth_Service.dart';
 import 'package:flutterproject/styles/TextStyles.dart';
 import 'package:flutterproject/views/login.dart';
 import 'package:flutterproject/widgets/Form_Button.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../widgets/Form_Element.dart';
-
-
-
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
+
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  AuthService authService = AuthService();
+
+  TextEditingController  nameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+
+  Future<void> _register() async {
+    String name = nameController.text;
+    String lastName = lastNameController.text;
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    if(_validateForm(name, lastName, email, password)){
+      await authService.signUp(name, lastName, email, password);
+    }else{
+      print("Form geçersiz.");
+    }
+
+  }
+
+  bool _validateForm(String name, String lastName, String email, String password) {
+    if (name.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty) {
+      return false;
+    }
+    if (!RegExp(r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+').hasMatch(email)) {
+      return false;
+    }
+    if (password.length < 6) {
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,9 +76,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
               SizedBox(height: 60),
-              _Form(),
+              _Form(
+                nameController: nameController,
+                lastNameController: lastNameController,
+                emailController: emailController,
+                passwordController: passwordController,
+              ),
               SizedBox(height: 30),
-              FormButton(isSingUp: true,),
+              FormButton(isSingUp: true,onPressed: _register,),
               SizedBox(height: 30),
               Center(
                 child: Row(
@@ -80,7 +119,13 @@ class _RegisterPageState extends State<RegisterPage> {
 }
 
 class _Form extends StatelessWidget {
-  const _Form({super.key});
+
+  final TextEditingController nameController;
+  final TextEditingController lastNameController;
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+
+  const _Form({super.key, required this.nameController, required this.lastNameController, required this.emailController, required this.passwordController});
 
   @override
   Widget build(BuildContext context) {
@@ -102,19 +147,38 @@ class _Form extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FormElement(hintTitle: "Name",inputType: TextInputType.name,isHalfWidth: true,),
+              FormElement(
+                hintTitle: "Name",
+                inputType: TextInputType.name,
+                isHalfWidth: true,
+                controller: nameController,
+
+              ),
               Spacer(),
-              FormElement(hintTitle: "LastName",inputType: TextInputType.name,isHalfWidth: true,),
+              FormElement(
+                hintTitle: "LastName",
+                inputType: TextInputType.name,
+                isHalfWidth: true,
+                controller: lastNameController,
+              ),
             ],
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: FormElement(hintTitle: "E-Mail",inputType: TextInputType.emailAddress,),
+          child: FormElement(
+            hintTitle: "E-Mail",
+            inputType: TextInputType.emailAddress,
+            controller: emailController,
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: FormElement(hintTitle: "Password",inputType: TextInputType.visiblePassword,),
+          child: FormElement(
+            hintTitle: "Password",
+            inputType: TextInputType.visiblePassword,
+            controller: passwordController,
+          ),
         ),
       ],
     );

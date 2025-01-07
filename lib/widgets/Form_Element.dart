@@ -7,9 +7,11 @@ class FormElement extends StatelessWidget {
   final hintTitle;
   bool isHalfWidth;
   final TextInputType inputType;
+  final TextEditingController? controller;
+  final ValueChanged<String>? onChanged;
 
 
-   FormElement({super.key ,required this.hintTitle,required this.inputType , this.isHalfWidth=false });
+   FormElement({super.key ,required this.hintTitle,required this.inputType , this.isHalfWidth=false, this.controller, this.onChanged });
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,8 @@ class FormElement extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 9.0),
         child: TextField(
+          controller: controller,
+          onChanged: onChanged,
           keyboardType: inputType,
           obscureText: hintTitle == "Password" ? true : false,
           style: TextStyle(color: Colors.white),

@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 class FormButton extends StatelessWidget {
 
   bool isSingUp;
+  final VoidCallback onPressed;
 
 
-  FormButton({super.key , required this.isSingUp});
+  FormButton({super.key , required this.isSingUp, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: (){},
+      onPressed:onPressed,
       child: Text(
       isSingUp ? "Sign Up" : "Sign In" ,
         style: TextStyle(

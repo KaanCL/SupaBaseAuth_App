@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutterproject/auth/Supabase_Client.dart';
 import 'package:flutterproject/views/login.dart';
 import 'package:flutterproject/views/register.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+void main() async{
+  await dotenv.load();
+  SupabaseConfig.initializeSupabase();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
