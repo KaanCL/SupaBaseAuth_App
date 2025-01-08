@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutterproject/auth/Auth_Service.dart';
 import 'package:flutterproject/styles/TextStyles.dart';
 import 'package:flutterproject/views/register.dart';
 import 'package:flutterproject/widgets/Form_Element.dart';
@@ -16,9 +17,37 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+   AuthService authService = AuthService();
 
-  String? _email ;
-  String? _password;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+
+  Future<void> signIn()async{
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    if(_validateForm(email, password)) {
+      final user = await authService.signIn(email, password);
+    }else{
+      print("Form geçersiz.");
+    }
+
+  }
+
+
+  bool _validateForm(String email, String password) {
+    if (email.isEmpty || password.isEmpty) {
+      return false;
+    }
+    if (!RegExp(r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+').hasMatch(email)) {
+      return false;
+    }
+    if (password.length < 6) {
+      return false;
+    }
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +70,10 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               SizedBox(height: 60),
-              _Form(),
+              _Form(emailController: emailController,passwordController: passwordController,),
               SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: signIn,
                 child: Text(
                   "Sign in",
                   style: TextStyle(
@@ -95,7 +124,10 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 class _Form extends StatelessWidget {
-  const _Form({super.key});
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+
+  const _Form({super.key, required this.emailController, required this.passwordController});
 
   @override
   Widget build(BuildContext context) {
@@ -118,11 +150,18 @@ class _Form extends StatelessWidget {
 
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: FormElement(hintTitle: "E-Mail",inputType: TextInputType.emailAddress,),
+          child: FormElement(
+            hintTitle: "E-Mail",
+            controller: emailController,
+            inputType: TextInputType.emailAddress,),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: FormElement(hintTitle: "Password",inputType: TextInputType.visiblePassword,),
+          child: FormElement(
+            hintTitle: "Password",
+            controller: passwordController,
+            inputType: TextInputType.visiblePassword,
+          ),
         ),
       ],
 

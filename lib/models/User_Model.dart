@@ -1,19 +1,29 @@
 class UserModel {
 
-  final String _name;
-  final String _lastName;
-  final String _password;
-  final String _email;
+  final String id;
+  final String name;
+  final String lastName;
+  final String email;
+  final String authId;
 
-  UserModel(this._name, this._lastName, this._password, this._email);
+  UserModel({
+    required this.id,
+    required this.name,
+    required this.lastName,
+    required this.email,
+    required this.authId,
+  });
 
-  String get email => _email;
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      lastName: json['lastName'] as String,
+      email: json['email'] as String,
+      authId: json['authId'] as String,
+    );
+  }
 
-  String get password => _password;
-
-  String get lastName => _lastName;
-
-  String get name => _name;
 
  
 }

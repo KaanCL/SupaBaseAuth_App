@@ -22,6 +22,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   AuthService authService = AuthService();
 
+
   TextEditingController  nameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -29,13 +30,17 @@ class _RegisterPageState extends State<RegisterPage> {
 
 
   Future<void> _register() async {
+    authService.getCurrentUser();
     String name = nameController.text;
     String lastName = lastNameController.text;
     String email = emailController.text;
     String password = passwordController.text;
 
     if(_validateForm(name, lastName, email, password)){
-      await authService.signUp(name, lastName, email, password);
+     final user = await authService.signUp(name, lastName, email, password);
+
+     await authService.getUser(user!.id);
+
     }else{
       print("Form geçersiz.");
     }
