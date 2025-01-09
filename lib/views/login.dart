@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutterproject/auth/Auth_Service.dart';
 import 'package:flutterproject/styles/TextStyles.dart';
+import 'package:flutterproject/views/home.dart';
 import 'package:flutterproject/views/register.dart';
 import 'package:flutterproject/widgets/Form_Element.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,12 +30,19 @@ class _LoginPageState extends State<LoginPage> {
 
     if(_validateForm(email, password)) {
       final user = await authService.signIn(email, password);
+      _goHomePage(user!.id);
     }else{
       print("Form geçersiz.");
     }
 
   }
 
+
+   Future<void> _goHomePage(String authId) async{
+
+     Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(authId: authId,)));
+
+   }
 
   bool _validateForm(String email, String password) {
     if (email.isEmpty || password.isEmpty) {

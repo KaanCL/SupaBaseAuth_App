@@ -31,4 +31,9 @@ class TextStyles  {
     fontSize: 20,
     fontWeight:FontWeight.bold,
   );
+  static const TextStyle cardText = TextStyle(
+    color:Colors.black54,
+    fontSize: 20,
+    fontWeight:FontWeight.bold,
+  );
 }

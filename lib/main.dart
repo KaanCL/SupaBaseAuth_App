@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutterproject/auth/Auth_Service.dart';
 import 'package:flutterproject/auth/Supabase_Client.dart';
+import 'package:flutterproject/views/home.dart';
 import 'package:flutterproject/views/login.dart';
 import 'package:flutterproject/views/register.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -17,6 +19,7 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {

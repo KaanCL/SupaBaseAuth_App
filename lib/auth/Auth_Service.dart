@@ -81,27 +81,33 @@ class AuthService{
   }
 
 
-  void getCurrentUser() {
+  User? getCurrentUser() {
      final user = client.auth.currentUser;
-     print("şuanki$user");
   }
 
-  Future<void> getUser(String authId) async{
-
+  Future<UserModel?> getUser(String authId) async{
+     print(authId);
      try{
        final response = await client
            .from('users')
            .select('*')
            .eq('authId', authId)
-           .single();
+           .limit(1)
+           .maybeSingle();
 
        if(response !=null){
-         print("db:$response");
+         print("kullanıcı:$response");
+         UserModel user =  UserModel.fromJson(response);
+         return user;
        }
-       print(response);
-     }catch(e){
 
+       return null;
+
+     }catch(e){
+      print("hata:$e");
      }
+
+     return null;
   }
 
 

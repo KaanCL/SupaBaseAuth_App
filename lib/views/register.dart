@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutterproject/auth/Auth_Service.dart';
 import 'package:flutterproject/styles/TextStyles.dart';
+import 'package:flutterproject/views/home.dart';
 import 'package:flutterproject/views/login.dart';
 import 'package:flutterproject/widgets/Form_Button.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,6 +42,8 @@ class _RegisterPageState extends State<RegisterPage> {
     if(_validateForm(name, lastName, email, password)){
      final user = await authService.signUp(name, lastName, email, password);
 
+     _goHomePage(user!.id);
+
      await authService.getUser(user!.id);
 
     }else{
@@ -46,6 +51,13 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
   }
+
+  Future<void> _goHomePage(String authId) async{
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(authId: authId,)));
+
+  }
+
 
   bool _validateForm(String name, String lastName, String email, String password) {
     if (name.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty) {
