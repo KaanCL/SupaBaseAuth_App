@@ -85,30 +85,30 @@ class AuthService{
      final user = client.auth.currentUser;
   }
 
-  Future<UserModel?> getUser(String authId) async{
-     print(authId);
-     try{
-       final response = await client
-           .from('users')
-           .select('*')
-           .eq('authId', authId)
-           .limit(1)
-           .maybeSingle();
+  Future<UserModel?> getUser(String authId) async {
+    try {
+      // Supabase'den veri sorgulama
+      final response = await client
+          .from('users') // Kullanıcılar tablosu
+          .select('*') // Tüm verileri seç
+          .eq('authId', authId) // authId ile eşleşen kayıtları al
+          .maybeSingle(); // Tek bir kullanıcı dönecek
 
-       if(response !=null){
-         print("kullanıcı:$response");
-         UserModel user =  UserModel.fromJson(response);
-         return user;
-       }
-
-       return null;
-
-     }catch(e){
-      print("hata:$e");
-     }
-
-     return null;
+      // Eğer sonuç varsa, UserModel'e dönüştür
+      if (response != null) {
+        print("Kullanıcı: $response");
+        UserModel user = UserModel.fromJson(response);
+        return user;
+      } else {
+        print("Kullanıcı bulunamadı.");
+        return null;
+      }
+    } catch (e) {
+      print("Hata: $e");
+    }
+    return null;
   }
+
 
 
 

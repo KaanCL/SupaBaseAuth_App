@@ -21,6 +21,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   AuthService authService = AuthService();
 
+  String? name;
   String? email;
   String? createdAt;
 
@@ -30,12 +31,23 @@ class _HomePageState extends State<HomePage> {
     _initializeData();
   }
 
+  Future<void> signOut() async{
+    authService.signOut();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    });
+
+  }
+
   void _initializeData() async{
    UserModel? user = await authService.getUser(widget.authId);
 
     print(user);
 
     if (user != null) {
+      name = user?.name;
       email = user?.email;
       createdAt = user?.createdAt;
     } else {
@@ -62,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisSize:  MainAxisSize.min,
                 children: [
                   Text(
-                    "Ad : ",
+                    "Ad : $name",
                     style:TextStyles.cardText,),
                   Text(
                     "Email : $email",
@@ -74,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 10,),
                   Align(
                     alignment: Alignment.bottomCenter,
-                    child: CardButton(onPressed: (){},)
+                    child: CardButton(onPressed: signOut,)
 
 
                   )
