@@ -87,14 +87,14 @@ class AuthService{
 
   Future<UserModel?> getUser(String authId) async {
     try {
-      // Supabase'den veri sorgulama
-      final response = await client
-          .from('users') // Kullanıcılar tablosu
-          .select('*') // Tüm verileri seç
-          .eq('authId', authId) // authId ile eşleşen kayıtları al
-          .maybeSingle(); // Tek bir kullanıcı dönecek
 
-      // Eğer sonuç varsa, UserModel'e dönüştür
+      final response = await client
+          .from('users')
+          .select('*')
+          .eq('authId', authId)
+          .maybeSingle();
+
+      
       if (response != null) {
         print("Kullanıcı: $response");
         UserModel user = UserModel.fromJson(response);

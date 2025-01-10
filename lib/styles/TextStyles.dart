@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
 class TextStyles  {
+
   static const TextStyle headingText = TextStyle(
     fontSize: 35,
     fontWeight: FontWeight.bold,
@@ -33,7 +35,7 @@ class TextStyles  {
   );
   static const TextStyle cardText = TextStyle(
     color:Colors.black54,
-    fontSize: 20,
+    fontSize: 17,
     fontWeight:FontWeight.bold,
   );
 }
