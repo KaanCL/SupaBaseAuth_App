@@ -41,23 +41,28 @@ class _HomePageState extends State<HomePage> {
 
   }
 
-  void _initializeData() async{
-   UserModel? user = await authService.getUser(widget.authId);
+  void _initializeData() async {
+    try {
+      UserModel? user = await authService.getUser(widget.authId);
 
-    print(user);
-
-    if (user != null) {
-      name = user?.name;
-      email = user?.email;
-      createdAt = user?.createdAt;
-    } else {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-        );
-      });
+      if (user != null) {
+        setState(() {
+          name = user.name;
+          email = user.email;
+          createdAt = user.createdAt.substring(0,10);
+        });
+      } else {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+          );
+        });
+      }
+    } catch (e) {
+      print(e);
     }
   }
+
 
 
   @override

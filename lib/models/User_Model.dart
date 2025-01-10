@@ -23,7 +23,7 @@ class UserModel {
       lastName: json['lastName'] ?? '',
       email: json['email'] ?? '',
       authId: json['authId'] ?? '',
-      createdAt: json['created_At'] ?? '',
+      createdAt: json['created_at'] ?? '',
     );
   }
 
