@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutterproject/SharedPrefence_Service.dart';
 import 'package:flutterproject/auth/Auth_Service.dart';
 import 'package:flutterproject/styles/TextStyles.dart';
 import 'package:flutterproject/views/home.dart';
@@ -41,10 +42,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if(_validateForm(name, lastName, email, password)){
      final user = await authService.signUp(name, lastName, email, password);
-
+     SharedPrefenceService.prefs?.setString("authId", user!.id);
      _goHomePage(user!.id);
-
-     await authService.getUser(user!.id);
 
     }else{
       print("Form geçersiz.");

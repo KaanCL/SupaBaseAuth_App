@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutterproject/SharedPrefence_Service.dart';
 import 'package:flutterproject/auth/Auth_Service.dart';
 import 'package:flutterproject/styles/TextStyles.dart';
 import 'package:flutterproject/views/home.dart';
@@ -20,28 +21,34 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
    AuthService authService = AuthService();
 
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
 
-  Future<void> signIn()async{
-    String email = emailController.text;
-    String password = passwordController.text;
+   Future<void> signIn() async {
+     String email = emailController.text;
+     String password = passwordController.text;
 
-    if(_validateForm(email, password)) {
-      final user = await authService.signIn(email, password);
-      _goHomePage(user!.id);
-    }else{
-      print("Form geçersiz.");
-    }
+     if (_validateForm(email, password)) {
+       final user = await authService.signIn(email, password);
 
-  }
+       if (user != null) {
+         if (SharedPrefenceService.prefs != null) {
+           SharedPrefenceService.prefs?.setString("authId", user.id);
+           _goHomePage(user.id);
+         } else {
 
+         }
+       } else {
+
+       }
+     } else {
+     }
+   }
 
    Future<void> _goHomePage(String authId) async{
-
      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(authId: authId,)));
-
    }
 
   bool _validateForm(String email, String password) {

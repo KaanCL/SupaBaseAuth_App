@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterproject/SharedPrefence_Service.dart';
 import 'package:flutterproject/auth/Auth_Service.dart';
 import 'package:flutterproject/styles/TextStyles.dart';
 import 'package:flutterproject/views/login.dart';
@@ -33,12 +34,12 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> signOut() async{
     authService.signOut();
+    SharedPrefenceService.prefs?.remove("authId");
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const LoginPage()),
-      );
-    });
+      Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),);
 
+    });
   }
 
   void _initializeData() async {

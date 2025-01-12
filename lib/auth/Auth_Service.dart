@@ -60,15 +60,11 @@ class AuthService{
 
       return user != null ? user : null;
 
-
-
     }catch(e){
       print(e);
     }
 
     return null;
-
-
   }
 
   Future<void> signOut() async{
@@ -94,13 +90,11 @@ class AuthService{
           .eq('authId', authId)
           .maybeSingle();
 
-      
+
       if (response != null) {
-        print("Kullanıcı: $response");
         UserModel user = UserModel.fromJson(response);
         return user;
       } else {
-        print("Kullanıcı bulunamadı.");
         return null;
       }
     } catch (e) {
